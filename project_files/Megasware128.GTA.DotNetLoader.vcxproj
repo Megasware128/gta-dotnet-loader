@@ -17,6 +17,8 @@
     <RootNamespace>Megasware128.GTA.DotNetLoader</RootNamespace>
     <TargetFramework>net8.0</TargetFramework>
     <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
+    <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -109,6 +111,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Megasware128.GTA.Runtime\Megasware128.GTA.Runtime.csproj">
+      <Project>{dea25b3b-deab-4be0-b030-72a95c198400}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
