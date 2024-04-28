@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="17.7.40" />
+    <PackageReference Include="NReco.Logging.File" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
