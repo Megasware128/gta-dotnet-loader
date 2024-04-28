@@ -1,9 +1,10 @@
 #pragma managed
+#include "messages.h"
 
 using namespace Megasware128::GTA::Runtime;
 
 static void LoadDotNet() {
-	PluginSystem::Initialize();
+	PluginSystem::Initialize(System::Reflection::Assembly::GetExecutingAssembly());
 }
 
 #pragma unmanaged
