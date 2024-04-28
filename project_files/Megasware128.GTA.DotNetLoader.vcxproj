@@ -104,7 +104,7 @@
       <ImportLibrary>..\output\asi\Megasware128.GTA.DotNetLoaderSA.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(TargetPath)" "$(GTA_SA_DIR)\scripts\Megasware128.GTA.DotNetLoaderSA.asi"</Command>
+      <Command>copy /y "$(OutDir)" "$(GTA_SA_DIR)\scripts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
