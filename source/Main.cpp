@@ -1,3 +1,9 @@
+#pragma managed
+
+static int RandomNumber() {
+    return System::Random::Shared->Next();
+}
+
 #pragma unmanaged
 #include "plugin.h"
 #include <windows.h>
@@ -7,16 +13,19 @@ using namespace plugin;
 class DotNetLoader {
 public:
     DotNetLoader() {
-        MessageBox(0, "Hello, World!", "DotNetLoader", MB_OK);
+        auto number = RandomNumber();
+        MessageBox(0, std::to_string(number).c_str(), "Random Number", 0);
     };
-} DotNetLoaderPlugin;
+};
+
+DotNetLoader* DotNetLoaderPlugin;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        DotNetLoaderPlugin = DotNetLoader();
+        DotNetLoaderPlugin = new DotNetLoader();
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
