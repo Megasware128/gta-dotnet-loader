@@ -2,5 +2,5 @@
 
 public interface IPlugin
 {
-    void Initialize();
+    void Initialize(IServiceProvider services);
 }
