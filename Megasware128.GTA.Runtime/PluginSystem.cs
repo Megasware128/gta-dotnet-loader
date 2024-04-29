@@ -1,4 +1,6 @@
-﻿using Megasware128.GTA.Abstractions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Composition;
 using System.Reflection;
 
@@ -6,35 +8,30 @@ namespace Megasware128.GTA.Runtime;
 
 public static class PluginSystem
 {
-    public static async void Initialize(Assembly entryAssembly)
+    public static IHost Initialize(Assembly loaderAssembly)
     {
-        const string pluginPath = "plugins";
-        var directory = new DirectoryInfo(pluginPath);
-        if (!directory.Exists)
-        {
-            directory.Create();
-        }
+        var host = new HostBuilder()
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureServices(services =>
+            {
+                services.TryAddSingleton<IPluginLocator, PluginLocator>();
+                services.TryAddSingleton<IAssemblyLoader, PluginLoader>();
 
-        var resolver = new Resolver(new PluginLoader(directory));
+                services.AddSingleton<Resolver>();
 
-        var discovery = PartDiscovery.Combine(resolver, new AttributedPartDiscoveryV1(resolver), new AttributedPartDiscovery(resolver));
+                services.AddSingleton<AttributedPartDiscoveryV1>();
+                services.AddSingleton<AttributedPartDiscovery>();
 
-        var entryParts = await discovery.CreatePartsAsync(entryAssembly);
-        var parts = await discovery.CreatePartsAsync(directory.EnumerateFiles("*.dll").Select(file => file.FullName));
+                services.AddSingleton(provider => PartDiscovery.Combine(provider.GetRequiredService<Resolver>(), provider.GetRequiredService<AttributedPartDiscoveryV1>(), provider.GetRequiredService<AttributedPartDiscovery>()));
 
-        var catalog = ComposableCatalog.Create(resolver).AddParts(entryParts).AddParts(parts).WithCompositionService();
+                services.Configure<PluginLoaderOptions>(options => options.LoaderAssembly = loaderAssembly);
 
-        var configuration = CompositionConfiguration.Create(catalog);
+                services.AddHostedService<PluginService>();
+            })
+            .Build();
 
-        var factory = configuration.CreateExportProviderFactory();
+        host.Start();
 
-        var provider = factory.CreateExportProvider();
-
-        var plugins = provider.GetExports<IPlugin>();
-
-        foreach (var plugin in plugins.Select(plugin => plugin.Value))
-        {
-            plugin.Initialize();
-        }
+        return host;
     }
 }

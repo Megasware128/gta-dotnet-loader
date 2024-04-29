@@ -1,10 +1,14 @@
 #pragma managed
 #include "messages.h"
+#include <msclr/gcroot.h>
 
+using namespace Microsoft::Extensions::Hosting;
 using namespace Megasware128::GTA::Runtime;
 
+msclr::gcroot<IHost^> host;
+
 static void LoadDotNet() {
-	PluginSystem::Initialize(System::Reflection::Assembly::GetExecutingAssembly());
+	host = PluginSystem::Initialize(System::Reflection::Assembly::GetExecutingAssembly());
 }
 
 #pragma unmanaged
@@ -18,7 +22,7 @@ public:
 	DotNetLoader() {
 		Events::initGameEvent += [] {
 			LoadDotNet();
-		};
+			};
 	};
 };
 
