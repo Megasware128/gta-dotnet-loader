@@ -68,8 +68,13 @@ internal class PluginService(IOptions<PluginLoaderOptions> options, Resolver res
 
         var plugins = provider.GetExports<IPlugin>();
 
+        _logger.LogInformation("{Count} plugins loaded", plugins.Count());
+
+        _logger.LogInformation("Initializing plugins...");
+
         foreach (var plugin in plugins.Select(plugin => plugin.Value))
         {
+            _logger.LogDebug("Initializing {Plugin}", plugin);
             plugin.Initialize();
         }
     }
