@@ -1,4 +1,5 @@
 ﻿using Megasware128.GTA.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -7,13 +8,14 @@ using System.Reflection;
 
 namespace Megasware128.GTA.Runtime;
 
-internal class PluginService(IOptions<PluginLoaderOptions> options, Resolver resolver, PartDiscovery discovery, IPluginLocator locator, ILogger<PluginService> logger) : BackgroundService
+internal class PluginService(IOptions<PluginLoaderOptions> options, Resolver resolver, PartDiscovery discovery, IPluginLocator locator, ILogger<PluginService> logger, IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
     private readonly PluginLoaderOptions _options = options.Value;
     private readonly Resolver _resolver = resolver;
     private readonly PartDiscovery _discovery = discovery;
     private readonly IPluginLocator _locator = locator;
-    private readonly ILogger<PluginService> _logger = logger;
+    private readonly ILogger _logger = logger;
+    private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -75,7 +77,9 @@ internal class PluginService(IOptions<PluginLoaderOptions> options, Resolver res
         foreach (var plugin in plugins.Select(plugin => plugin.Value))
         {
             _logger.LogDebug("Initializing {Plugin}", plugin);
-            plugin.Initialize();
+            
+            var scope = _serviceScopeFactory.CreateScope();
+            plugin.Initialize(scope.ServiceProvider);
         }
     }
 }
