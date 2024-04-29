@@ -33,7 +33,7 @@ public static class PluginSystem
             })
             .ConfigureLogging(logging =>
             {
-                logging.AddFile("gta-plugin-runtime.log");
+                logging.AddFile("dotnet-loader.log");
             })
             .Build();
 
