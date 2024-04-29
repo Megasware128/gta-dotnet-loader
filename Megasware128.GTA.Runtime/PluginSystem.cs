@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Composition;
+using NReco.Logging.File;
 using System.Reflection;
 
 namespace Megasware128.GTA.Runtime;
@@ -14,6 +15,8 @@ public static class PluginSystem
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureServices(services =>
             {
+                services.AddSingleton<IHostLifetime, NullLifetime>();
+
                 services.TryAddSingleton<IPluginLocator, PluginLocator>();
                 services.TryAddSingleton<IAssemblyLoader, PluginLoader>();
 
@@ -28,10 +31,21 @@ public static class PluginSystem
 
                 services.AddHostedService<PluginService>();
             })
+            .ConfigureLogging(logging =>
+            {
+                logging.AddFile("dotnet-loader.log");
+            })
             .Build();
 
         host.Start();
 
         return host;
+    }
+
+    private sealed class NullLifetime : IHostLifetime
+    {
+        public Task WaitForStartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }

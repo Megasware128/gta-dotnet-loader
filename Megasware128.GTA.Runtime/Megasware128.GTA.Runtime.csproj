@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Composition" Version="17.7.40" />
+    <PackageReference Include="NReco.Logging.File" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
