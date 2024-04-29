@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Composition;
+using NReco.Logging.File;
 using System.Reflection;
 
 namespace Megasware128.GTA.Runtime;
@@ -27,6 +28,10 @@ public static class PluginSystem
                 services.Configure<PluginLoaderOptions>(options => options.LoaderAssembly = loaderAssembly);
 
                 services.AddHostedService<PluginService>();
+            })
+            .ConfigureLogging(logging =>
+            {
+                logging.AddFile("gta-plugin-runtime.log");
             })
             .Build();
 
