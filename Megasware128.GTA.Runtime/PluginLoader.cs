@@ -4,9 +4,9 @@ using System.Runtime.Loader;
 
 namespace Megasware128.GTA.Runtime;
 
-internal class PluginLoader(DirectoryInfo directory) : IAssemblyLoader
+internal class PluginLoader(IPluginLocator pluginLocator) : IAssemblyLoader
 {
-    private readonly Dictionary<string, PluginLoadContext> _assemblyLoaders = directory.EnumerateFiles("*.dll")
+    private readonly Dictionary<string, PluginLoadContext> _assemblyLoaders = pluginLocator.Plugins
         .ToDictionary(file => file.Name[..^4], file => new PluginLoadContext(file.FullName));
 
     public Assembly LoadAssembly(string assemblyFullName, string? codeBasePath)
