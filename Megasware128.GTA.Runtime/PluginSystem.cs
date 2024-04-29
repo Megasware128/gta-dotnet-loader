@@ -15,6 +15,8 @@ public static class PluginSystem
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureServices(services =>
             {
+                services.AddSingleton<IHostLifetime, NullLifetime>();
+
                 services.TryAddSingleton<IPluginLocator, PluginLocator>();
                 services.TryAddSingleton<IAssemblyLoader, PluginLoader>();
 
@@ -38,5 +40,12 @@ public static class PluginSystem
         host.Start();
 
         return host;
+    }
+
+    private sealed class NullLifetime : IHostLifetime
+    {
+        public Task WaitForStartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }
