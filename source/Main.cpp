@@ -1,5 +1,6 @@
 #pragma managed
 #include "messages.h"
+#include "hud.h"
 #include <msclr/gcroot.h>
 
 using namespace Microsoft::Extensions::Hosting;
