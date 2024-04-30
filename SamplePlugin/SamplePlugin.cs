@@ -8,9 +8,9 @@ namespace SamplePlugin;
 
 [Export(typeof(IPlugin))]
 [method: ImportingConstructor]
-public class SamplePlugin(IMessages messages) : IPlugin
+public class SamplePlugin(IHud hud) : IPlugin
 {
-    private readonly IMessages _messages = messages;
+    private readonly IHud _hud = hud;
 
     public async void Initialize(IServiceProvider services)
     {
@@ -18,6 +18,6 @@ public class SamplePlugin(IMessages messages) : IPlugin
 
         await Task.Delay(TimeSpan.FromSeconds(5));
 
-        _messages.Show("Hello, World!", 5000);
+        _hud.ShowHelpMessage("Hello, World!");
     }
 }
