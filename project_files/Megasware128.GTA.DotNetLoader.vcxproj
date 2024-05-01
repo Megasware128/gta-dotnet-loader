@@ -118,10 +118,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\entity.h" />
     <ClInclude Include="..\source\utilities.h" />
     <ClInclude Include="..\source\hud.h" />
     <ClInclude Include="..\source\messages.h" />
     <ClInclude Include="..\source\peds.h" />
+    <ClInclude Include="..\source\vehicles.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

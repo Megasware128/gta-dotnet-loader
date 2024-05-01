@@ -3,16 +3,17 @@
 #include "CPlayerPed.h"
 
 #pragma managed
+#include "entity.h"
 
 using namespace System;
 using namespace System::Composition;
 using namespace Megasware128::GTA::Abstractions::Game;
 
-private ref class Ped : public IPed {
+private ref class Ped : public Entity, public IPed {
 private:
     CPed* _ped;
 public:
-    Ped(CPed* ped) {
+    Ped(CPed* ped) : Entity(ped) {
         _ped = ped;
     }
 

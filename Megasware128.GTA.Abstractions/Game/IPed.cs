@@ -1,6 +1,6 @@
 ﻿namespace Megasware128.GTA.Abstractions.Game;
 
-public interface IPed
+public interface IPed : IEntity
 {
     public float Health { get; set; }
     public bool IsStanding { get; set; }
