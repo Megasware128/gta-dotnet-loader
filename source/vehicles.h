@@ -3,16 +3,17 @@
 #include "CVehicle.h"
 
 #pragma managed
+#include "entity.h"
 
 using namespace System;
 using namespace System::Composition;
 using namespace Megasware128::GTA::Abstractions::Game;
 
-private ref class Vehicle : public IVehicle {
+private ref class Vehicle : public Entity, public IVehicle {
 private:
     CVehicle* _vehicle;
 public:
-    Vehicle(CVehicle* vehicle) {
+	Vehicle(CVehicle* vehicle) : Entity(vehicle) {
         _vehicle = vehicle;
     }
 
