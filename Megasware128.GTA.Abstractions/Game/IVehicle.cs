@@ -6,4 +6,5 @@ public interface IVehicle
     byte PrimaryColor { get; set; }
     byte SecondaryColor { get; set; }
     bool IsEngineOn { get; set; }
+    bool IsLocked { get; set; }
 }

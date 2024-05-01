@@ -51,4 +51,13 @@ public:
             _vehicle->m_nVehicleFlags.bEngineOn = value;
         }
     }
+
+	virtual property bool IsLocked {
+		bool get() {
+			return _vehicle->m_nVehicleFlags.bIsLocked;
+		}
+		void set(bool value) {
+			_vehicle->m_nVehicleFlags.bIsLocked = value;
+		}
+	}
 };
