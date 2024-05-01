@@ -118,6 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\entity.h" />
     <ClInclude Include="..\source\utilities.h" />
     <ClInclude Include="..\source\hud.h" />
     <ClInclude Include="..\source\messages.h" />
