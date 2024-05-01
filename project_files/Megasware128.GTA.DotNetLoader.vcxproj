@@ -118,7 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\helpers.h" />
+    <ClInclude Include="..\source\utilities.h" />
     <ClInclude Include="..\source\hud.h" />
     <ClInclude Include="..\source\messages.h" />
     <ClInclude Include="..\source\peds.h" />

@@ -8,10 +8,10 @@ namespace SamplePlugin;
 
 [Export(typeof(IPlugin))]
 [method: ImportingConstructor]
-public class SamplePlugin(IHud hud, IHelpers helpers) : IPlugin
+public class SamplePlugin(IHud hud, IGameUtilities helpers) : IPlugin
 {
     private readonly IHud _hud = hud;
-    private readonly IHelpers _helpers = helpers;
+    private readonly IGameUtilities _helpers = helpers;
 
     public async void Initialize(IServiceProvider services)
     {
