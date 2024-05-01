@@ -23,6 +23,6 @@ public class SamplePlugin(IHud hud, IGameUtilities helpers) : IPlugin
 
         await Task.Delay(TimeSpan.FromMinutes(1));
 
-        _helpers.FindPlayerPed().Health = 0;
+        _helpers.FindPlayerVehicle().Health = 0;
     }
 }

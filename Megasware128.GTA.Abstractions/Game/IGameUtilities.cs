@@ -3,4 +3,5 @@
 public interface IGameUtilities
 {
     IPlayerPed FindPlayerPed();
+    IVehicle FindPlayerVehicle();
 }
