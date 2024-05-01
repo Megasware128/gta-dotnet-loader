@@ -16,7 +16,7 @@ using namespace Megasware128::GTA::Abstractions::Game;
 public ref class Messages : public IMessages {
 public:
 	virtual void Show(String^ message) {
-		addMessage((char*)(Marshal::StringToHGlobalAnsi(message)).ToPointer(), 1000);
+		Show(message, 5000);
 	}
 
 	virtual void Show(String^ message, int duration) {
