@@ -2,5 +2,8 @@
 
 public interface IVehicle
 {
-    public float Health { get; set; }
+    float Health { get; set; }
+    byte PrimaryColor { get; set; }
+    byte SecondaryColor { get; set; }
+    bool IsEngineOn { get; set; }
 }
