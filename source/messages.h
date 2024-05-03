@@ -20,6 +20,9 @@ public:
 	}
 
 	virtual void Show(String^ message, int duration) {
-		addMessage((char*)(Marshal::StringToHGlobalAnsi(message)).ToPointer(), duration);
+		IntPtr ptr = Marshal::StringToHGlobalAnsi(message);
+		char* str = static_cast<char*>(ptr.ToPointer());
+		addMessage(str, duration);
+		Marshal::FreeHGlobal(ptr);
 	}
 };
