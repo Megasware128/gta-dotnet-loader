@@ -16,6 +16,9 @@ using namespace Megasware128::GTA::Abstractions::Game;
 public ref class Hud : public IHud {
 public:
 	virtual void ShowHelpMessage(String^ message, bool quick, bool permanent) {
-		addHelpMessage((char*)(Marshal::StringToHGlobalAnsi(message)).ToPointer(), quick, permanent);
+		IntPtr ptr = Marshal::StringToHGlobalAnsi(message);
+		char* str = static_cast<char*>(ptr.ToPointer());
+		addHelpMessage(str, quick, permanent);
+		Marshal::FreeHGlobal(ptr);
 	}
 };
