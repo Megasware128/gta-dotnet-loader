@@ -3,19 +3,20 @@
 #pragma unmanaged
 #include "CHud.h"
 
-static void addHelpMessage(char* message, bool quick, bool permanent) {
+static void addHelpMessage(const char* message, bool quick, bool permanent) {
 	CHud::SetHelpMessage(message, quick, permanent, false);
 }
 
 #pragma managed
+#include <msclr/marshal.h>
+
+using namespace msclr::interop;
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
 using namespace Megasware128::GTA::Abstractions::Game;
 
 void Hud::ShowHelpMessage(String^ message, bool quick, bool permanent) {
-	IntPtr ptr = Marshal::StringToHGlobalAnsi(message);
-	char* str = static_cast<char*>(ptr.ToPointer());
-	addHelpMessage(str, quick, permanent);
-	Marshal::FreeHGlobal(ptr);
+	marshal_context context;
+	addHelpMessage(context.marshal_as<const char*>(message), quick, permanent);
 }
