@@ -110,6 +110,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\entity.cpp" />
     <ClCompile Include="..\source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
