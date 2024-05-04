@@ -79,7 +79,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>plugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>plugin.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(PLUGIN_SDK_DIR)\output\lib;$(DXSDK_DIR)\Lib\x86;$(PLUGIN_SDK_DIR)\shared\bass;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\output\asi\Megasware128.GTA.DotNetLoaderSA.lib</ImportLibrary>
     </Link>
@@ -101,7 +101,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>plugin_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>plugin_d.lib;d3dx9d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(PLUGIN_SDK_DIR)\output\lib;$(DXSDK_DIR)\Lib\x86;$(PLUGIN_SDK_DIR)\shared\bass;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\output\asi\Megasware128.GTA.DotNetLoaderSA.lib</ImportLibrary>
     </Link>
@@ -110,7 +110,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\entity.cpp" />
+    <ClCompile Include="..\source\hud.cpp" />
+    <ClCompile Include="..\source\messages.cpp" />
     <ClCompile Include="..\source\Main.cpp" />
+    <ClCompile Include="..\source\peds.cpp" />
+    <ClCompile Include="..\source\utilities.cpp" />
+    <ClCompile Include="..\source\vehicles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Megasware128.GTA.Runtime\Megasware128.GTA.Runtime.csproj">
