@@ -3,14 +3,16 @@
 #pragma unmanaged
 #include "CMessages.h"
 
-static void addMessage(char* message, int duration) {
-	CMessages::AddMessageJumpQ(message, duration, 0, false);
+static void addMessage(const char* message, int duration) {
+	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0, false);
 }
 
 #pragma managed
+#include <msclr/marshal.h>
+
+using namespace msclr::interop;
 
 using namespace System;
-using namespace System::Runtime::InteropServices;
 using namespace Megasware128::GTA::Abstractions::Game;
 
 void Messages::Show(String^ message) {
@@ -18,8 +20,6 @@ void Messages::Show(String^ message) {
 }
 
 void Messages::Show(String^ message, int duration) {
-	IntPtr ptr = Marshal::StringToHGlobalAnsi(message);
-	char* str = static_cast<char*>(ptr.ToPointer());
-	addMessage(str, duration);
-	Marshal::FreeHGlobal(ptr);
+	marshal_context^ context = gcnew marshal_context();
+	addMessage(context->marshal_as<const char*>(message), duration);
 }
