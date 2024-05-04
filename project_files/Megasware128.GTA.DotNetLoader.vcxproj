@@ -114,6 +114,7 @@
     <ClCompile Include="..\source\hud.cpp" />
     <ClCompile Include="..\source\messages.cpp" />
     <ClCompile Include="..\source\Main.cpp" />
+    <ClCompile Include="..\source\peds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Megasware128.GTA.Runtime\Megasware128.GTA.Runtime.csproj">
