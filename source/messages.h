@@ -1,3 +1,4 @@
+#pragma once
 #pragma managed
 
 [System::Composition::Export(Megasware128::GTA::Abstractions::Game::IMessages::typeid)]
