@@ -4,11 +4,15 @@
 #include "common.h"
 
 static CPlayerPed* findPlayerPed() {
-	return FindPlayerPed();
+	return FindPlayerPed(0);
 }
 
 static CVehicle* findPlayerVehicle(bool includeRemote) {
+#ifndef GTAIV
 	return FindPlayerVehicle(0, includeRemote);
+#else
+	return FindPlayerVehicle(0);
+#endif
 }
 
 #pragma managed

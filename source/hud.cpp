@@ -1,10 +1,20 @@
 #include "hud.h"
 
 #pragma unmanaged
+#ifndef GTAIV
 #include "CHud.h"
+#else
+#include "Rage.h"
+#include "extensions/ScriptCommands.h"
+#endif
 
 static void addHelpMessage(const char* message, bool quick, bool permanent) {
+#ifndef GTAIV
 	CHud::SetHelpMessage(message, quick, permanent, false);
+#else
+	// TODO: Fix this
+	//plugin::Command<void, plugin::Commands::PRINT_HELP_WITH_STRING, const char*, const char*>("STRING", "Hello World!");
+#endif
 }
 
 #pragma managed
