@@ -79,7 +79,7 @@ internal class PluginService(IOptions<PluginLoaderOptions> options, Resolver res
             _logger.LogDebug("Initializing {Plugin}", plugin);
 
             var scope = _serviceScopeFactory.CreateScope();
-            plugin.Initialize(scope.ServiceProvider);
+            await plugin.InitializeAsync(scope.ServiceProvider);
         }
     }
 }

@@ -2,5 +2,6 @@
 
 public interface IPlugin
 {
-    void Initialize(IServiceProvider services);
+    ValueTask InitializeAsync(IServiceProvider services);
+    void Tick(float deltaTime);
 }
