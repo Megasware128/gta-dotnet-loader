@@ -1,4 +1,5 @@
 #include "vehicles.h"
+#include "extensions/ScriptCommands.h"
 
 #pragma managed
 
@@ -76,18 +77,18 @@ void Vehicle::SecondaryColor::set(byte value) {
 }
 
 bool Vehicle::IsEngineOn::get() {
-    throw gcnew System::NotImplementedException();
+	return plugin::Command<float, plugin::Commands::GET_VEHICLE_ENGINE_REVS>(_vehicle) > 0.0f;
 }
 
 void Vehicle::IsEngineOn::set(bool value) {
-    throw gcnew System::NotImplementedException();
+	plugin::Command<void, plugin::Commands::SET_CAR_ENGINE_ON>(_vehicle, value);
 }
 
 bool Vehicle::IsLocked::get() {
-    throw gcnew System::NotImplementedException();
+	return plugin::Command<bool, plugin::Commands::GET_CAR_DOOR_LOCK_STATUS>(_vehicle) > 1;
 }
 
 void Vehicle::IsLocked::set(bool value) {
-    throw gcnew System::NotImplementedException();
+	plugin::Command<void, plugin::Commands::LOCK_CAR_DOORS>(_vehicle, value ? 2 : 1);
 }
 #endif
