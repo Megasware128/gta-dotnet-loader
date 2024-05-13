@@ -1,4 +1,5 @@
 #include "peds.h"
+#include "extensions/ScriptCommands.h"
 
 #pragma managed
 
@@ -17,57 +18,25 @@ void Ped::Health::set(float value) {
 }
 
 #ifndef GTAIV
-bool Ped::IsStanding::get() {
-	return _ped->m_nPedFlags.bIsStanding;
-}
-
-void Ped::IsStanding::set(bool value) {
-	_ped->m_nPedFlags.bIsStanding = value;
-}
-
 bool Ped::IsAimingGun::get() {
 	return _ped->m_nPedFlags.bIsAimingGun;
-}
-
-void Ped::IsAimingGun::set(bool value) {
-	_ped->m_nPedFlags.bIsAimingGun = value;
 }
 
 bool Ped::IsInVehicle::get() {
 	return _ped->m_nPedFlags.bInVehicle;
 }
-
-void Ped::IsInVehicle::set(bool value) {
-	_ped->m_nPedFlags.bInVehicle = value;
-}
 #else
-bool Ped::IsStanding::get() {
-	throw gcnew System::NotImplementedException();
-}
-
-void Ped::IsStanding::set(bool value) {
-	throw gcnew System::NotImplementedException();
-}
-
 bool Ped::IsAimingGun::get() {
-	if (_ped->m_WeaponData.m_pTargetEntity)
+	if (_ped->m_WeaponData.m_pTargetEntity) // Hacky, maybe remove this functionality entirely
 	{
 		return true;
 	}
 
-	throw gcnew System::NotImplementedException();
-}
-
-void Ped::IsAimingGun::set(bool value) {
-	throw gcnew System::NotImplementedException();
+	return false;
 }
 
 bool Ped::IsInVehicle::get() {
 	return !_ped->m_bNotInVehicle;
-}
-
-void Ped::IsInVehicle::set(bool value) {
-	_ped->m_bNotInVehicle = !value;
 }
 #endif
 
