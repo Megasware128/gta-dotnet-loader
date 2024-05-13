@@ -18,15 +18,27 @@ Vector3 Entity::Position::get() {
 }
 
 void Entity::Position::set(Vector3 value) {
+#ifdef GTASA
 	entity->SetPosn(value.X, value.Y, value.Z);
+#else
+	entity->SetPosition(value.X, value.Y, value.Z);
+#endif
 }
 
 Vector3 Entity::Rotation::get() {
 	Vector3 rot{};
+#ifdef GTASA
 	entity->GetOrientation(rot.X, rot.Y, rot.Z);
+#else // GTASA
+	entity->m_placement.GetOrientation(rot.X, rot.Y, rot.Z);
+#endif
 	return rot;
 }
 
 void Entity::Rotation::set(Vector3 value) {
+#ifdef GTASA
 	entity->SetOrientation(value.X, value.Y, value.Z);
+#else // GTASA
+	entity->m_placement.SetOrientation(value.X, value.Y, value.Z);
+#endif // GTASA
 }

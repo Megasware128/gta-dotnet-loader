@@ -4,7 +4,11 @@
 #include "CMessages.h"
 
 static void addMessage(const char* message, int duration) {
+#ifdef GTASA
 	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0, false);
+#else
+	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0);
+#endif // GTASA
 }
 
 #pragma managed
