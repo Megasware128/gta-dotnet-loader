@@ -1,8 +1,5 @@
 #include "entity.h"
-
-#ifdef GTAIV
-#define CVector rage::Vector3
-#endif
+#include "CVector.h"
 
 #pragma managed
 
