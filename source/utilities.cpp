@@ -2,6 +2,7 @@
 
 #pragma unmanaged
 #include "common.h"
+#include "Other.h"
 
 static CPlayerPed* findPlayerPed() {
 	return FindPlayerPed(0);
@@ -27,4 +28,8 @@ Megasware128::GTA::Abstractions::Game::IPlayerPed^ GameUtilities::FindPlayerPed(
 
 Megasware128::GTA::Abstractions::Game::IVehicle^ GameUtilities::FindPlayerVehicle() {
 	return gcnew Vehicle(findPlayerVehicle(true));
+}
+
+bool GameUtilities::IsKeyPressed(System::ConsoleKey key) {
+	return plugin::KeyPressed(static_cast<int>(key));
 }

@@ -4,4 +4,5 @@ public interface IGameUtilities
 {
     IPlayerPed FindPlayerPed();
     IVehicle FindPlayerVehicle();
+    bool IsKeyPressed(ConsoleKey key);
 }

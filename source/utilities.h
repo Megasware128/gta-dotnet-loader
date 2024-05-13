@@ -7,4 +7,5 @@ public ref class GameUtilities : public Megasware128::GTA::Abstractions::Game::I
 public:
 	virtual Megasware128::GTA::Abstractions::Game::IPlayerPed^ FindPlayerPed();
 	virtual Megasware128::GTA::Abstractions::Game::IVehicle^ FindPlayerVehicle();
+	virtual bool IsKeyPressed(System::ConsoleKey key);
 };
