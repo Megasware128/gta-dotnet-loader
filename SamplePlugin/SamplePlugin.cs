@@ -20,8 +20,6 @@ public class SamplePlugin(IHud hud, IGameUtilities helpers, IMessages messages) 
 
         await Task.Delay(TimeSpan.FromSeconds(5));
 
-        _hud.ShowHelpMessage("Hello, World!");
-
         var playerPed = _helpers.FindPlayerPed();
 
         while (true)
