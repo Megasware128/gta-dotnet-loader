@@ -2,13 +2,18 @@
 
 #pragma unmanaged
 #include "common.h"
+#include "Other.h"
 
 static CPlayerPed* findPlayerPed() {
-	return FindPlayerPed();
+	return FindPlayerPed(0);
 }
 
 static CVehicle* findPlayerVehicle(bool includeRemote) {
+#ifndef GTAIV
 	return FindPlayerVehicle(0, includeRemote);
+#else
+	return FindPlayerVehicle(0);
+#endif
 }
 
 #pragma managed
@@ -23,4 +28,8 @@ Megasware128::GTA::Abstractions::Game::IPlayerPed^ GameUtilities::FindPlayerPed(
 
 Megasware128::GTA::Abstractions::Game::IVehicle^ GameUtilities::FindPlayerVehicle() {
 	return gcnew Vehicle(findPlayerVehicle(true));
+}
+
+bool GameUtilities::IsKeyPressed(System::ConsoleKey key) {
+	return plugin::KeyPressed(static_cast<int>(key));
 }

@@ -16,20 +16,18 @@ public:
         void set(float value);
     }
 
-    virtual property bool IsStanding {
-        bool get();
-        void set(bool value);
-    }
-
     virtual property bool IsAimingGun {
         bool get();
-        void set(bool value);
     }
 
     virtual property bool IsInVehicle {
         bool get();
-        void set(bool value);
     }
+
+	virtual property Megasware128::GTA::Abstractions::Game::IVehicle^ Vehicle {
+		Megasware128::GTA::Abstractions::Game::IVehicle^ get();
+		void set(Megasware128::GTA::Abstractions::Game::IVehicle^ value);
+	}
 };
 
 private ref class PlayerPed : public Ped, public Megasware128::GTA::Abstractions::Game::IPlayerPed {

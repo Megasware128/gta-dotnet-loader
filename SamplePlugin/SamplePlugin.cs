@@ -20,13 +20,16 @@ public class SamplePlugin(IHud hud, IGameUtilities helpers, IMessages messages) 
 
         await Task.Delay(TimeSpan.FromSeconds(5));
 
-        _hud.ShowHelpMessage("Hello, World!");
-
         var playerPed = _helpers.FindPlayerPed();
 
         while (true)
         {
             _messages.Show($"Player position: {playerPed.Position}", 100);
+
+            if (_helpers.IsKeyPressed(ConsoleKey.B))
+            {
+                playerPed.Vehicle.IsEngineOn = false;
+            }
 
             await Task.Delay(TimeSpan.FromMilliseconds(100));
         }

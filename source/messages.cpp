@@ -1,10 +1,19 @@
 #include "messages.h"
 
 #pragma unmanaged
+#ifndef GTAIV
 #include "CMessages.h"
+#else
+#include "Rage.h"
+#include "extensions/ScriptCommands.h"
+#endif
 
 static void addMessage(const char* message, int duration) {
+#ifndef GTAIV
 	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0, false);
+#else
+	plugin::Command<void, plugin::Commands::PRINT_STRING_WITH_LITERAL_STRING>("STRING", message);
+#endif
 }
 
 #pragma managed

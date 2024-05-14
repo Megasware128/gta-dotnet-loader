@@ -6,7 +6,7 @@
 #include "entity.h"
 
 private ref class Vehicle : public Entity, public Megasware128::GTA::Abstractions::Game::IVehicle {
-private:
+internal:
     CVehicle* _vehicle;
 public:
     Vehicle(CVehicle* vehicle);
