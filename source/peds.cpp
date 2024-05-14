@@ -1,5 +1,6 @@
 #include "peds.h"
 #include "extensions/ScriptCommands.h"
+#include <vehicles.h>
 
 #pragma managed
 
@@ -25,6 +26,14 @@ bool Ped::IsAimingGun::get() {
 bool Ped::IsInVehicle::get() {
 	return _ped->m_nPedFlags.bInVehicle;
 }
+
+IVehicle^ Ped::Vehicle::get() {
+	return gcnew ::Vehicle(_ped->m_pVehicle);
+}
+
+void Ped::Vehicle::set(IVehicle^ value) {
+	_ped->m_pVehicle = ((::Vehicle^)value)->_vehicle;
+}
 #else
 bool Ped::IsAimingGun::get() {
 	if (_ped->m_WeaponData.m_pTargetEntity) // Hacky, maybe remove this functionality entirely
@@ -37,6 +46,14 @@ bool Ped::IsAimingGun::get() {
 
 bool Ped::IsInVehicle::get() {
 	return !_ped->m_bNotInVehicle;
+}
+
+IVehicle^ Ped::Vehicle::get() {
+	return gcnew ::Vehicle(_ped->m_pVehicle);
+}
+
+void Ped::Vehicle::set(IVehicle^ value) {
+	_ped->m_pVehicle = ((::Vehicle^)value)->_vehicle;
 }
 #endif
 

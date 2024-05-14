@@ -5,6 +5,7 @@ public interface IPed : IEntity
     public float Health { get; set; }
     public bool IsAimingGun { get; }
     public bool IsInVehicle { get; }
+    public IVehicle Vehicle { get; set; }
 }
 
 public interface IPlayerPed : IPed
