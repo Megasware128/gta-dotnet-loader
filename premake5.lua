@@ -1,12 +1,19 @@
 projectName = "Megasware128.GTA.DotNetLoader"
 
 workspace(projectName)
-configurations { "Release", "Debug" }
+configurations { "ReleaseSA", "DebugSA", "ReleaseVC", "DebugVC" }
 location("project_files/")
 
 project("Megasware128.GTA.Abstractions")
 	kind "SharedLib"
 	location("Megasware128.GTA.Abstractions/")
+
+    configmap {
+        ["ReleaseSA"] = "Release",
+        ["DebugSA"] = "Debug",
+        ["ReleaseVC"] = "Release",
+        ["DebugVC"] = "Debug",
+    }
 
 	language "C#"
 	dotnetframework "net8.0"
@@ -26,6 +33,13 @@ project("Megasware128.GTA.Abstractions")
 project("Megasware128.GTA.Runtime")
 	kind "SharedLib"
 	location("Megasware128.GTA.Runtime/")
+
+    configmap {
+        ["ReleaseSA"] = "Release",
+        ["DebugSA"] = "Debug",
+        ["ReleaseVC"] = "Release",
+        ["DebugVC"] = "Debug",
+    }
 
 	language "C#"
 	dotnetframework "net8.0"
@@ -61,7 +75,6 @@ characterset ("MBCS")
 
 links { "Megasware128.GTA.Runtime" }
 
-targetdir("output/asi/")
 objdir("output/obj/")
 
 defines {
@@ -91,19 +104,22 @@ libdirs {
 	"$(PLUGIN_SDK_DIR)/shared/bass/",
 }
 
-filter "configurations:Debug"
+filter "configurations:Debug*"
 	defines { "DEBUG" }
 	symbols "on"
 	staticruntime "off"
 
-filter "configurations:Release"
+    debuggertype "NativeWithManagedCore"
+
+filter "configurations:Release*"
 	defines { "NDEBUG" }
 	symbols "off"
 	optimize "On"
 	staticruntime "off"
 
-filter "configurations:*"
+filter "configurations:*SA"
 	targetname(projectName .. "SA")
+    targetdir("output/asi/SA/")    
 
 	defines { "GTASA", "PLUGIN_SGV_10US", "RW" }
 
@@ -114,11 +130,31 @@ filter "configurations:*"
 
 	debugdir "$(GTA_SA_DIR)"
 	debugcommand "$(GTA_SA_DIR)/gta-sa.exe"
-	debuggertype "NativeWithManagedCore"
 	postbuildcommands("copy /y \"$(OutDir)\" \"$(GTA_SA_DIR)\\scripts\"")
 
-	filter "configurations:Release"
+	filter "configurations:ReleaseSA"
 		links { "plugin" }
 
-	filter "configurations:Debug"
+	filter "configurations:DebugSA"
 		links { "plugin_d" }
+
+filter "configurations:*VC"
+    targetname(projectName .. "VC")
+    targetdir("output/asi/VC/")
+
+    defines { "GTAVC", "PLUGIN_SGV_10EN", "RW" }
+
+    includedirs {
+        "$(PLUGIN_SDK_DIR)\\plugin_VC\\",
+        "$(PLUGIN_SDK_DIR)\\plugin_VC\\game_VC\\",
+    }
+
+    debugdir "$(GTA_VC_DIR)"
+    debugcommand "$(GTA_VC_DIR)/gta-vc.exe"
+    postbuildcommands("copy /y \"$(OutDir)\" \"$(GTA_VC_DIR)\\scripts\"")
+
+    filter "configurations:ReleaseVC"
+        links { "plugin_vc" }
+
+    filter "configurations:DebugVC"
+        links { "plugin_vc_d" }
