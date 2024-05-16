@@ -1,0 +1,144 @@
+From d1cf24434e8b8eda580bc3fa11263551e857d273 Mon Sep 17 00:00:00 2001
+From: Jordy Hulck <Jordy.Hulck@outlook.com>
+Date: Thu, 16 May 2024 01:47:28 +0200
+Subject: [PATCH] chore: Update .NET Core project files with new options
+
+---
+ modules/vstudio/vs2005_csproj.lua     |  2 ++
+ modules/vstudio/vs2005_dotnetbase.lua | 23 +++++++++++++++
+ modules/vstudio/vs2010_vcxproj.lua    | 13 +++++++++
+ src/_premake_init.lua                 | 40 ++++++++++++++++++++++++++-
+ 4 files changed, 77 insertions(+), 1 deletion(-)
+
+diff --git a/modules/vstudio/vs2005_csproj.lua b/modules/vstudio/vs2005_csproj.lua
+index 73c252ef..db8645b0 100644
+--- a/modules/vstudio/vs2005_csproj.lua
++++ b/modules/vstudio/vs2005_csproj.lua
+@@ -53,6 +53,8 @@
+ 				dotnetbase.netcore.useWpf,
+ 				dotnetbase.csversion,
+ 				dotnetbase.netcore.enableDefaultCompileItems,
++				dotnetbase.netcore.implicitUsings,
++				dotnetbase.netcore.nullableReferenceTypes,
+ 			}
+ 		else
+ 			return {
+diff --git a/modules/vstudio/vs2005_dotnetbase.lua b/modules/vstudio/vs2005_dotnetbase.lua
+index d0f45003..eee00810 100644
+--- a/modules/vstudio/vs2005_dotnetbase.lua
++++ b/modules/vstudio/vs2005_dotnetbase.lua
+@@ -792,6 +792,29 @@
+ 		_p(2,'<EnableDefaultCompileItems>%s</EnableDefaultCompileItems>', iif(cfg.enableDefaultCompileItems, "true", "false"))
+ 	end
+ 
++	function dotnetbase.netcore.implicitUsings(cfg)
++		if cfg.implicitUsings then
++			local lookup = {}
++			lookup[p.ON] = "enable"
++			lookup[p.OFF] = "disable"
++
++			_p(2,'<ImplicitUsings>%s</ImplicitUsings>', lookup[cfg.implicitUsings])
++		end
++	end
++
++	function dotnetbase.netcore.nullableReferenceTypes(cfg)
++		if cfg.nullableReferences then
++			local lookup = {
++				Warnings = "warnings",
++				Annotations = "annotations",
++			}
++			lookup[p.ON] = "enable"
++			lookup[p.OFF] = "disable"
++
++			_p(2,'<Nullable>%s</Nullable>', lookup[cfg.nullableReferences])
++		end
++	end
++
+ 	function dotnetbase.netcore.useWpf(cfg)
+ 		if cfg.flags.WPF then
+ 			_p(2,'<UseWpf>true</UseWpf>')
+diff --git a/modules/vstudio/vs2010_vcxproj.lua b/modules/vstudio/vs2010_vcxproj.lua
+index ba7a9a0c..0fe4d4ce 100644
+--- a/modules/vstudio/vs2010_vcxproj.lua
++++ b/modules/vstudio/vs2010_vcxproj.lua
+@@ -125,6 +125,17 @@
+ 	end
+ 
+ 
++	function m.managedPackageReferences(cfg)
++		if dotnetbase.isNewFormatProject(cfg) then
++			p.w('<EnableManagedPackageReferenceSupport>%s</EnableManagedPackageReferenceSupport>', iif(cfg.enableManagedPackageReferences, "true", "false"))
++		end
++	end
++
++	function m.copyLocalLockFileAssemblies(cfg)
++		if dotnetbase.isNewFormatProject(cfg) then
++			p.w('<CopyLocalLockFileAssemblies>%s</CopyLocalLockFileAssemblies>', iif(cfg.copyLockFileAssemblies, "true", "false"))
++		end
++	end
+ 
+ --
+ -- Write out the Globals property group.
+@@ -2553,6 +2564,8 @@
+ 			else
+ 				if isManaged or m.isClrMixed(prj) then
+ 					m.targetFramework(prj)
++					m.managedPackageReferences(prj)
++					m.copyLocalLockFileAssemblies(prj)
+ 				end
+ 				if isManaged then
+ 					m.element("Keyword", nil, "ManagedCProj")
+diff --git a/src/_premake_init.lua b/src/_premake_init.lua
+index 421b9f8f..b684fd7f 100644
+--- a/src/_premake_init.lua
++++ b/src/_premake_init.lua
+@@ -622,7 +622,45 @@
+ 		name = "enabledefaultcompileitems",
+ 		scope = "config",
+ 		kind = "boolean",
+-		default = false
++		default = true,
++	}
++
++	api.register {
++		name = "implicitusings",
++		scope = "config",
++		kind = "string",
++		allowed = {
++			"Off",
++			"On",
++		},
++		default = "On",
++	}
++
++	api.register {
++		name = "nullablereferences",
++		scope = "config",
++		kind = "string",
++		allowed = {
++			"Off",
++			"On",
++			"Warnings",
++			"Annotations",
++		},
++		default = "On",
++	}
++
++	api.register {
++		name = "enablemanagedpackagereferences",
++		scope = "config",
++		kind = "boolean",
++		default = true,
++	}
++
++	api.register {
++		name = "copylockfileassemblies",
++		scope = "config",
++		kind = "boolean",
++		default = false,
+ 	}
+ 
+ 	api.register {
+-- 
+2.45.0.windows.1
+
