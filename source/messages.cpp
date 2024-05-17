@@ -1,13 +1,13 @@
 #include "messages.h"
 
 #pragma unmanaged
-#include "CHud.h"
+#include "CMessages.h"
 
 static void addMessage(const char* message, int duration) {
 #ifdef GTASA
 	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0, false);
 #else
-	CHud::SetMessage(message); // TODO: This is not the correct way to do it
+	CMessages::AddMessageJumpQ(const_cast<char*>(message), duration, 0);
 #endif // GTASA
 }
 
