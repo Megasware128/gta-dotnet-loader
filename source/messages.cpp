@@ -2,6 +2,7 @@
 
 #pragma unmanaged
 #include "CHud.h"
+#include "CMessages.h"
 
 static void addMessage(const char* message, int duration) {
 #ifdef GTASA
