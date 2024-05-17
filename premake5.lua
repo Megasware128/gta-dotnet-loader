@@ -83,7 +83,7 @@ defines {
 	"_USE_MATH_DEFINES",
 	"_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING"
 }
-cppdialect "C++17"
+cppdialect "C++20"
 dotnetframework "net8.0"
 enablemanagedpackagereferences "true"
 copylockfileassemblies "true"
@@ -96,6 +96,7 @@ files {
 includedirs {
 	"$(PLUGIN_SDK_DIR)/shared/",
 	"$(PLUGIN_SDK_DIR)/shared/game/",
+	"vcpkg_installed/x86-windows/include/",
 }
 
 libdirs {
