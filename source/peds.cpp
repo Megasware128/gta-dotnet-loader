@@ -33,11 +33,19 @@ void Ped::IsAimingGun::set(bool value) {
 }
 
 bool Ped::IsInVehicle::get() {
+#ifdef GTASA
     return _ped->m_nPedFlags.bInVehicle;
+#else
+	return _ped->m_bInVehicle;
+#endif // GTASA
 }
 
 void Ped::IsInVehicle::set(bool value) {
+#ifdef GTASA
     _ped->m_nPedFlags.bInVehicle = value;
+#else
+	_ped->m_bInVehicle = value;
+#endif // GTASA
 }
 
 PlayerPed::PlayerPed(CPlayerPed* ped) : Ped(ped) {
@@ -53,5 +61,9 @@ void PlayerPed::WantedLevel::set(int value) {
 }
 
 bool PlayerPed::CanStartMission::get() {
+#ifdef GTASA
     return _ped->CanPlayerStartMission();
+#else
+    return true;
+#endif // GTASA
 }

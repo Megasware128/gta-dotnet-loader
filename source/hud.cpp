@@ -4,7 +4,11 @@
 #include "CHud.h"
 
 static void addHelpMessage(const char* message, bool quick, bool permanent) {
+#ifdef GTASA
 	CHud::SetHelpMessage(message, quick, permanent, false);
+#else
+	CHud::SetHelpMessage(message, quick, permanent);
+#endif // GTASA
 }
 
 #pragma managed

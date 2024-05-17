@@ -8,7 +8,11 @@ static CPlayerPed* findPlayerPed() {
 }
 
 static CVehicle* findPlayerVehicle(bool includeRemote) {
+#ifdef GTASA
 	return FindPlayerVehicle(0, includeRemote);
+#else
+	return FindPlayerVehicle();
+#endif // GTASA
 }
 
 #pragma managed
