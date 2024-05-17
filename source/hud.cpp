@@ -1,7 +1,7 @@
 #include "hud.h"
 
 #pragma unmanaged
-#include "CHud.h"
+#include <CHud.h>
 
 static void addHelpMessage(const char* message, bool quick, bool permanent) {
 #ifdef GTASA

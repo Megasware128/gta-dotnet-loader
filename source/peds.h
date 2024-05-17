@@ -1,6 +1,6 @@
 #pragma once
 #pragma unmanaged
-#include "CPlayerPed.h"
+#include <CPlayerPed.h>
 
 #pragma managed
 #include "entity.h"

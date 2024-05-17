@@ -14,7 +14,7 @@ static void LoadDotNet() {
 }
 
 #pragma unmanaged
-#include "plugin.h"
+#include <plugin.h>
 #include <windows.h>
 
 using namespace plugin;
