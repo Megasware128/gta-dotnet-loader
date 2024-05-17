@@ -169,6 +169,8 @@ filter "configurations:*III"
 	targetname(projectName .. "III")
 	targetdir("output/asi/III/")
 
+	characterset ("Unicode")
+
 	defines { "GTA3", "PLUGIN_SGV_10EN", "RW" }
 
 	includedirs {
