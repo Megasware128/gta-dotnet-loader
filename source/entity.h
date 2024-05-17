@@ -1,6 +1,6 @@
 #pragma once
 #pragma unmanaged
-#include "CEntity.h"
+#include <CEntity.h>
 
 #pragma managed
 

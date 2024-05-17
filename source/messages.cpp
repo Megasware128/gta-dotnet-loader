@@ -1,7 +1,7 @@
 #include "messages.h"
 
 #pragma unmanaged
-#include "CMessages.h"
+#include <CMessages.h>
 
 static void addMessage(const char* message, int duration) {
 #ifdef GTASA
