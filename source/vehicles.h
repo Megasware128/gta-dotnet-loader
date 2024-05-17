@@ -1,6 +1,6 @@
 #pragma once
 #pragma unmanaged
-#include "CVehicle.h"
+#include <CVehicle.h>
 
 #pragma managed
 #include "entity.h"
