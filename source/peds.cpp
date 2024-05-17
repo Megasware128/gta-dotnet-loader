@@ -5,36 +5,36 @@
 using namespace Megasware128::GTA::Abstractions::Game;
 
 Ped::Ped(CPed* ped) : Entity(ped) {
-    _ped = ped;
+	_ped = ped;
 }
 
 float Ped::Health::get() {
-    return _ped->m_fHealth;
+	return _ped->m_fHealth;
 }
 
 void Ped::Health::set(float value) {
-    _ped->m_fHealth = value;
+	_ped->m_fHealth = value;
 }
 
 bool Ped::IsStanding::get() {
-    return _ped->m_nPedFlags.bIsStanding;
+	return _ped->m_nPedFlags.bIsStanding;
 }
 
 void Ped::IsStanding::set(bool value) {
-    _ped->m_nPedFlags.bIsStanding = value;
+	_ped->m_nPedFlags.bIsStanding = value;
 }
 
 bool Ped::IsAimingGun::get() {
-    return _ped->m_nPedFlags.bIsAimingGun;
+	return _ped->m_nPedFlags.bIsAimingGun;
 }
 
 void Ped::IsAimingGun::set(bool value) {
-    _ped->m_nPedFlags.bIsAimingGun = value;
+	_ped->m_nPedFlags.bIsAimingGun = value;
 }
 
 bool Ped::IsInVehicle::get() {
 #ifdef GTASA
-    return _ped->m_nPedFlags.bInVehicle;
+	return _ped->m_nPedFlags.bInVehicle;
 #else
 	return _ped->m_bInVehicle;
 #endif // GTASA
@@ -42,28 +42,32 @@ bool Ped::IsInVehicle::get() {
 
 void Ped::IsInVehicle::set(bool value) {
 #ifdef GTASA
-    _ped->m_nPedFlags.bInVehicle = value;
+	_ped->m_nPedFlags.bInVehicle = value;
 #else
 	_ped->m_bInVehicle = value;
 #endif // GTASA
 }
 
 PlayerPed::PlayerPed(CPlayerPed* ped) : Ped(ped) {
-    _ped = ped;
+	_ped = ped;
 }
 
 int PlayerPed::WantedLevel::get() {
-    return _ped->GetWantedLevel();
+#ifndef GTA3
+	return _ped->GetWantedLevel();
+#else
+	return _ped->m_pWanted->m_nWantedLevel;
+#endif
 }
 
 void PlayerPed::WantedLevel::set(int value) {
-    _ped->SetWantedLevel(value);
+	_ped->SetWantedLevel(value);
 }
 
 bool PlayerPed::CanStartMission::get() {
 #ifdef GTASA
-    return _ped->CanPlayerStartMission();
+	return _ped->CanPlayerStartMission();
 #else
-    return true;
+	return true;
 #endif // GTASA
 }

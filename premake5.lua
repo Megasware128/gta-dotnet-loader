@@ -1,7 +1,7 @@
 projectName = "Megasware128.GTA.DotNetLoader"
 
 workspace(projectName)
-configurations { "ReleaseSA", "DebugSA", "ReleaseVC", "DebugVC" }
+configurations { "ReleaseSA", "DebugSA", "ReleaseVC", "DebugVC", "ReleaseIII", "DebugIII" }
 location("project_files/")
 
 project("Megasware128.GTA.Abstractions")
@@ -13,6 +13,8 @@ project("Megasware128.GTA.Abstractions")
         ["DebugSA"] = "Debug",
         ["ReleaseVC"] = "Release",
         ["DebugVC"] = "Debug",
+		["ReleaseIII"] = "Release",
+		["DebugIII"] = "Debug",
     }
 
 	language "C#"
@@ -39,6 +41,8 @@ project("Megasware128.GTA.Runtime")
         ["DebugSA"] = "Debug",
         ["ReleaseVC"] = "Release",
         ["DebugVC"] = "Debug",
+		["ReleaseIII"] = "Release",
+		["DebugIII"] = "Debug",
     }
 
 	language "C#"
@@ -159,3 +163,27 @@ filter "configurations:*VC"
 
     filter "configurations:DebugVC"
         links { "plugin_vc_d" }
+
+filter "configurations:*III"
+
+	targetname(projectName .. "III")
+	targetdir("output/asi/III/")
+
+	characterset ("Unicode")
+
+	defines { "GTA3", "PLUGIN_SGV_10EN", "RW" }
+
+	includedirs {
+		"$(PLUGIN_SDK_DIR)\\plugin_III\\",
+		"$(PLUGIN_SDK_DIR)\\plugin_III\\game_III\\",
+	}
+
+	debugdir "$(GTA_III_DIR)"
+	debugcommand "$(GTA_III_DIR)/gta3.exe"
+	postbuildcommands("copy /y \"$(OutDir)\" \"$(GTA_III_DIR)\\scripts\"")
+
+	filter "configurations:ReleaseIII"
+		links { "plugin_iii" }
+
+	filter "configurations:DebugIII"
+		links { "plugin_iii_d" }
