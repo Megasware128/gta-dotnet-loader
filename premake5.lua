@@ -147,6 +147,8 @@ filter "configurations:*VC"
     targetname(projectName .. "VC")
     targetdir("output/asi/VC/")
 
+	characterset ("Unicode")
+
     defines { "GTAVC", "PLUGIN_SGV_10EN", "RW" }
 
     includedirs {
