@@ -5,7 +5,7 @@
 #pragma managed
 #include "entity.h"
 
-private ref class Ped : public Entity, public Megasware128::GTA::Abstractions::Game::IPed {
+ref class Ped : public Entity, public Megasware128::GTA::Abstractions::Game::IPed {
 private:
     CPed* _ped;
 public:

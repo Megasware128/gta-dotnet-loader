@@ -299,10 +299,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\PoolEnumerator.h" />
     <ClInclude Include="..\source\entity.h" />
     <ClInclude Include="..\source\hud.h" />
     <ClInclude Include="..\source\messages.h" />
     <ClInclude Include="..\source\peds.h" />
+    <ClInclude Include="..\source\pools.h" />
     <ClInclude Include="..\source\utilities.h" />
     <ClInclude Include="..\source\vehicles.h" />
   </ItemGroup>
@@ -312,6 +314,7 @@
     <ClCompile Include="..\source\hud.cpp" />
     <ClCompile Include="..\source\messages.cpp" />
     <ClCompile Include="..\source\peds.cpp" />
+    <ClCompile Include="..\source\pools.cpp" />
     <ClCompile Include="..\source\utilities.cpp" />
     <ClCompile Include="..\source\vehicles.cpp" />
   </ItemGroup>
