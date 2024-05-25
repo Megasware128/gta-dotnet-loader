@@ -9,6 +9,15 @@
 #include "peds.h"
 #include "vehicles.h"
 
+#ifdef GTASA
+typedef CCopPed CSecondaryPed;
+typedef CHeli CSecondaryVehicle;
+#else
+typedef CPlayerPed CSecondaryPed;
+typedef CAutomobile CSecondaryVehicle;
+#endif // GTASA
+
+
 using namespace System::Collections::Generic;
 using namespace System::Linq;
 using namespace Megasware128::GTA::Abstractions::Game;
@@ -18,7 +27,7 @@ ref class Peds : IEnumerable<IPed^>
 public:
 	virtual IEnumerator<IPed^>^ GetEnumerator()
 	{
-		auto enumerator = gcnew PoolEnumerator<CPed, Ped, CCopPed>(CPools::ms_pPedPool);
+		auto enumerator = gcnew PoolEnumerator<CPed, Ped, CSecondaryPed>(CPools::ms_pPedPool);
 		return safe_cast<IEnumerator<IPed^>^>(enumerator);
 	}
 
@@ -38,7 +47,7 @@ ref class Vehicles : IEnumerable<IVehicle^>
 	public:
 	virtual IEnumerator<IVehicle^>^ GetEnumerator()
 	{
-		auto enumerator = gcnew PoolEnumerator<CVehicle, Vehicle, CHeli>(CPools::ms_pVehiclePool);
+		auto enumerator = gcnew PoolEnumerator<CVehicle, Vehicle, CSecondaryVehicle>(CPools::ms_pVehiclePool);
 		return safe_cast<IEnumerator<IVehicle^>^>(enumerator);
 	}
 
