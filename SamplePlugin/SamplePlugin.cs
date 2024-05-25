@@ -8,11 +8,13 @@ namespace SamplePlugin;
 
 [Export(typeof(IPlugin))]
 [method: ImportingConstructor]
-public class SamplePlugin(IHud hud, IGameUtilities helpers, IMessages messages) : IPlugin
+public class SamplePlugin(IHud hud, IGameUtilities helpers, IMessages messages, IPools pools)
+    : IPlugin
 {
     private readonly IHud _hud = hud;
     private readonly IGameUtilities _helpers = helpers;
     private readonly IMessages _messages = messages;
+    private readonly IPools _pools = pools;
 
     public async void Initialize(IServiceProvider services)
     {
@@ -22,13 +24,15 @@ public class SamplePlugin(IHud hud, IGameUtilities helpers, IMessages messages) 
 
         _hud.ShowHelpMessage("Hello, World!");
 
-        var playerPed = _helpers.FindPlayerPed();
-
         while (true)
         {
-            _messages.Show($"Player position: {playerPed.Position}", 100);
+            await Task.Delay(TimeSpan.FromSeconds(10));
 
-            await Task.Delay(TimeSpan.FromMilliseconds(100));
+            foreach (var vehicle in _pools.Vehicles)
+            {
+                byte randomColor = (byte)Random.Shared.Next(69);
+                vehicle.PrimaryColor = randomColor;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
 #pragma managed
 #include "entity.h"
 
-private ref class Vehicle : public Entity, public Megasware128::GTA::Abstractions::Game::IVehicle {
+ref class Vehicle : public Entity, public Megasware128::GTA::Abstractions::Game::IVehicle {
 private:
     CVehicle* _vehicle;
 public:
