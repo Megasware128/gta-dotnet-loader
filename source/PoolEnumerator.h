@@ -42,7 +42,7 @@ public:
             if (m_index < 0 || m_index >= m_pool->m_nSize)
                 throw gcnew System::InvalidOperationException();
 
-            return gcnew U(&m_pool->m_pObjects[m_index]);
+            return gcnew U(m_pool->GetAt(m_index));
         }
     }
 
