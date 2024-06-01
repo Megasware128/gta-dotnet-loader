@@ -18,17 +18,14 @@ public:
 
     virtual property bool IsStanding {
         bool get();
-        void set(bool value);
     }
 
     virtual property bool IsAimingGun {
         bool get();
-        void set(bool value);
     }
 
     virtual property bool IsInVehicle {
         bool get();
-        void set(bool value);
     }
 };
 

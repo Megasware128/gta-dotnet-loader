@@ -20,16 +20,8 @@ bool Ped::IsStanding::get() {
 	return _ped->m_nPedFlags.bIsStanding;
 }
 
-void Ped::IsStanding::set(bool value) {
-	_ped->m_nPedFlags.bIsStanding = value;
-}
-
 bool Ped::IsAimingGun::get() {
 	return _ped->m_nPedFlags.bIsAimingGun;
-}
-
-void Ped::IsAimingGun::set(bool value) {
-	_ped->m_nPedFlags.bIsAimingGun = value;
 }
 
 bool Ped::IsInVehicle::get() {
@@ -37,14 +29,6 @@ bool Ped::IsInVehicle::get() {
 	return _ped->m_nPedFlags.bInVehicle;
 #else
 	return _ped->m_bInVehicle;
-#endif // GTASA
-}
-
-void Ped::IsInVehicle::set(bool value) {
-#ifdef GTASA
-	_ped->m_nPedFlags.bInVehicle = value;
-#else
-	_ped->m_bInVehicle = value;
 #endif // GTASA
 }
 
