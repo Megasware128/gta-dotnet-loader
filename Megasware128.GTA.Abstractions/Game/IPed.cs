@@ -3,9 +3,9 @@
 public interface IPed : IEntity
 {
     float Health { get; set; }
-    bool IsStanding { get; set; }
-    bool IsAimingGun { get; set; }
-    bool IsInVehicle { get; set; }
+    bool IsStanding { get; }
+    bool IsAimingGun { get; }
+    bool IsInVehicle { get; }
 }
 
 public interface IPlayerPed : IPed
