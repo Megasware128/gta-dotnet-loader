@@ -36,6 +36,8 @@
     <RootNamespace>Megasware128.GTA.DotNetLoader</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <!-- Import CI build props if available -->
+  <Import Project="$(MSBuildProjectDirectory)\..\ci-build.props" Condition="Exists('$(MSBuildProjectDirectory)\..\ci-build.props')" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseSA|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
