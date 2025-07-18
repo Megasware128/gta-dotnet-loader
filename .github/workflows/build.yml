@@ -45,7 +45,7 @@ jobs:
     - name: Create dummy Plugin SDK and DirectX SDK structure
       shell: powershell
       run: |
-        # Create Plugin SDK structure
+        # Create Plugin SDK structure for all variants
         New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\game"
         New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\bass"
         New-Item -ItemType Directory -Force -Path "plugin-sdk\output\lib"
@@ -84,6 +84,125 @@ plugin::Event<void()> plugin::Events::initGameEvent;
 "@ | Out-File -FilePath "plugin-sdk\shared\plugin.h" -Encoding ASCII
         
         "// Dummy Game header" | Out-File -FilePath "plugin-sdk\shared\game\game.h" -Encoding ASCII
+        
+        # Create additional required headers for C++ compilation
+        @"
+#pragma once
+// Dummy CPool header
+template<typename T, typename V = T>
+class CPool {
+public:
+    T* GetAt(int index) { return nullptr; }
+    int GetSize() { return 0; }
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CPool.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CEntity header
+struct CVector {
+    float x, y, z;
+    CVector() : x(0), y(0), z(0) {}
+    CVector(float x, float y, float z) : x(x), y(y), z(z) {}
+};
+
+class CEntity {
+public:
+    CVector GetPosition() { return CVector(); }
+    void SetPosition(CVector pos) {}
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CEntity.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CPed header
+#include "CEntity.h"
+
+struct CPedFlags {
+    bool bIsStanding;
+};
+
+class CPed : public CEntity {
+public:
+    float m_fHealth;
+    CPedFlags m_nPedFlags;
+};
+
+class CPlayerPed : public CPed {
+public:
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CPlayerPed.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CVehicle header
+#include "CEntity.h"
+
+class CVehicle : public CEntity {
+public:
+    float m_fHealth;
+    unsigned char m_nPrimaryColor;
+};
+
+class CAutomobile : public CVehicle {
+public:
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CVehicle.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CHud header
+class CHud {
+public:
+    static void SetHelpMessage(const char* message, bool quick, bool permanent, bool addToBrief = false) {}
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CHud.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CMessages header
+class CMessages {
+public:
+    static void AddMessageJumpQ(char* message, int duration, int flag, bool flag2 = false) {}
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CMessages.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CPools header
+#include "CPlayerPed.h"
+#include "CVehicle.h"
+
+class CPools {
+public:
+    static CPlayerPed* GetPed(int index) { return nullptr; }
+    static CVehicle* GetVehicle(int index) { return nullptr; }
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CPools.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy common header
+#include "CPlayerPed.h"
+#include "CVehicle.h"
+
+CPlayerPed* FindPlayerPed() { return nullptr; }
+CVehicle* FindPlayerVehicle(int player = 0, bool includeRemote = false) { return nullptr; }
+"@ | Out-File -FilePath "plugin-sdk\shared\common.h" -Encoding ASCII
+
+        @"
+#pragma once
+// Dummy CHeli header (for SA)
+#include "CVehicle.h"
+
+class CHeli : public CVehicle {
+public:
+};
+
+class CCopPed : public CPed {
+public:
+};
+"@ | Out-File -FilePath "plugin-sdk\shared\CHeli.h" -Encoding ASCII
         
         # Create basic dummy library files (minimal valid LIB format)
         $dummyLibContent = @(0x21, 0x3C, 0x61, 0x72, 0x63, 0x68, 0x3E, 0x0A)  # "!<arch>" header for LIB files
