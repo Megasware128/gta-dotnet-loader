@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <!-- Disable PostBuild events for CI builds -->
-    <RunPostBuildEvent>Never</RunPostBuildEvent>
-    
     <!-- Set default paths for CI if not provided -->
     <PLUGIN_SDK_DIR Condition="'$(PLUGIN_SDK_DIR)' == ''">$(MSBuildProjectDirectory)\..\plugin-sdk</PLUGIN_SDK_DIR>
     <DXSDK_DIR Condition="'$(DXSDK_DIR)' == ''">$(MSBuildProjectDirectory)\..\dxsdk</DXSDK_DIR>

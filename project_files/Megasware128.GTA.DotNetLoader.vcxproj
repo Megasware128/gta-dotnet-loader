@@ -170,7 +170,7 @@
       <ImportLibrary>..\output\asi\SA\Megasware128.GTA.DotNetLoaderSA.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_SA_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_SA_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugSA|Win32'">
@@ -193,7 +193,7 @@
       <ImportLibrary>..\output\asi\SA\Megasware128.GTA.DotNetLoaderSA.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_SA_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_SA_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseVC|Win32'">
@@ -222,7 +222,7 @@
       <ImportLibrary>..\output\asi\VC\Megasware128.GTA.DotNetLoaderVC.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_VC_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_VC_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugVC|Win32'">
@@ -245,7 +245,7 @@
       <ImportLibrary>..\output\asi\VC\Megasware128.GTA.DotNetLoaderVC.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_VC_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_VC_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseIII|Win32'">
@@ -274,7 +274,7 @@
       <ImportLibrary>..\output\asi\III\Megasware128.GTA.DotNetLoaderIII.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_III_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_III_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugIII|Win32'">
@@ -297,7 +297,7 @@
       <ImportLibrary>..\output\asi\III\Megasware128.GTA.DotNetLoaderIII.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y "$(OutDir)" "$(GTA_III_DIR)\scripts"</Command>
+      <Command>copy /y "$(OutDir)*.*" "$(GTA_III_DIR)\scripts\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
