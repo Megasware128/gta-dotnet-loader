@@ -97,21 +97,21 @@ jobs:
           $env:DXSDK_DIR = "${{ github.workspace }}\dxsdk"
           Write-Host "PLUGIN_SDK_DIR: $env:PLUGIN_SDK_DIR"
           Write-Host "DXSDK_DIR: $env:DXSDK_DIR"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseSA|Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseSA /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
 
       - name: Build C++ project (VC Release)
         shell: powershell
         run: |
           $env:PLUGIN_SDK_DIR = "${{ github.workspace }}\plugin-sdk"
           $env:DXSDK_DIR = "${{ github.workspace }}\dxsdk"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseVC|Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseVC /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
 
       - name: Build C++ project (III Release)
         shell: powershell
         run: |
           $env:PLUGIN_SDK_DIR = "${{ github.workspace }}\plugin-sdk"
           $env:DXSDK_DIR = "${{ github.workspace }}\dxsdk"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseIII|Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseIII /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:normal
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
