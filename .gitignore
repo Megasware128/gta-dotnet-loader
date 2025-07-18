@@ -364,3 +364,8 @@ FodyWeavers.xsd
 
 /output/
 /vcpkg_installed
+
+# Linux build system
+/build/
+/dist/
+build.sh
