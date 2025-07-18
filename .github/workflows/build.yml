@@ -2,256 +2,120 @@ name: Build
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Setup vcpkg
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgConfigurationFile: '${{ github.workspace }}/vcpkg-configuration.json'
-        vcpkgJsonFile: '${{ github.workspace }}/vcpkg.json'
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgConfigurationFile: '${{ github.workspace }}/vcpkg-configuration.json'
+          vcpkgJsonFile: '${{ github.workspace }}/vcpkg.json'
 
-    - name: Setup Plugin SDK environment
-      shell: powershell
-      run: |
-        $pluginSdkPath = "${{ github.workspace }}\plugin-sdk"
-        echo "PLUGIN_SDK_DIR=$pluginSdkPath" >> $env:GITHUB_ENV
-        echo "Setting PLUGIN_SDK_DIR to: $pluginSdkPath"
-        
-        # Create dummy DirectX SDK path to prevent linker errors
-        $dxSdkPath = "${{ github.workspace }}\dxsdk"
-        echo "DXSDK_DIR=$dxSdkPath" >> $env:GITHUB_ENV
-        echo "Setting DXSDK_DIR to: $dxSdkPath"
+      - name: Setup Plugin SDK environment
+        shell: powershell
+        run: |
+          $pluginSdkPath = "${{ github.workspace }}\plugin-sdk"
+          echo "PLUGIN_SDK_DIR=$pluginSdkPath" >> $env:GITHUB_ENV
+          echo "Setting PLUGIN_SDK_DIR to: $pluginSdkPath"
 
-    - name: Create dummy Plugin SDK and DirectX SDK structure
-      shell: powershell
-      run: |
-        # Create Plugin SDK structure for all variants
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\game"
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\bass"
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\output\lib"
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_SA\game_SA"
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_VC\game_VC"
-        New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_III\game_III"
-        
-        # Create dummy header files with basic required definitions
-        @"
-#pragma once
-// Dummy Plugin SDK header for CI build
+          # Create dummy DirectX SDK path to prevent linker errors
+          $dxSdkPath = "${{ github.workspace }}\dxsdk"
+          echo "DXSDK_DIR=$dxSdkPath" >> $env:GITHUB_ENV
+          echo "Setting DXSDK_DIR to: $dxSdkPath"
 
-namespace plugin {
-    template<typename T>
-    class Event {
-    public:
-        Event& operator+=(T&& func) {
-            // Dummy implementation for CI
-            return *this;
-        }
-    };
-    
-    class Events {
-    public:
-        static Event<void()> initGameEvent;
-    };
-}
+      - name: Create dummy Plugin SDK and DirectX SDK structure
+        shell: powershell
+        run: |
+          # Create Plugin SDK structure for all variants
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\game"
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\shared\bass"
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\output\lib"
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_SA\game_SA"
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_VC\game_VC"
+          New-Item -ItemType Directory -Force -Path "plugin-sdk\plugin_III\game_III"
+          
+          # Create dummy Plugin SDK header
+          Set-Content -Path "plugin-sdk\shared\plugin.h" -Value "#pragma once`n// Dummy Plugin SDK header for CI build`n`nnamespace plugin {`n    template<typename T>`n    class Event {`n    public:`n        Event& operator+=(T&& func) {`n            // Dummy implementation for CI`n            return *this;`n        }`n    };`n    `n    class Events {`n    public:`n        static Event<void()> initGameEvent;`n    };`n}`n`n// Define the static member`nplugin::Event<void()> plugin::Events::initGameEvent;`n`n// Define basic macros that might be expected`n#define PLUGIN_SGV_10US`n#define GTASA`n#define RW"
+          
+          # Create other dummy headers  
+          Set-Content -Path "plugin-sdk\shared\game\game.h" -Value "// Dummy Game header"
+          Set-Content -Path "plugin-sdk\shared\CPool.h" -Value "#pragma once`n// Dummy CPool header`ntemplate<typename T, typename V = T>`nclass CPool {`npublic:`n    T* GetAt(int index) { return nullptr; }`n    int GetSize() { return 0; }`n};"
+          Set-Content -Path "plugin-sdk\shared\CEntity.h" -Value "#pragma once`n// Dummy CEntity header`nstruct CVector {`n    float x, y, z;`n    CVector() : x(0), y(0), z(0) {}`n    CVector(float x, float y, float z) : x(x), y(y), z(z) {}`n};`n`nclass CEntity {`npublic:`n    CVector GetPosition() { return CVector(); }`n    void SetPosition(CVector pos) {}`n};"
+          Set-Content -Path "plugin-sdk\shared\CPlayerPed.h" -Value "#pragma once`n// Dummy CPed header`n#include `"CEntity.h`"`n`nstruct CPedFlags {`n    bool bIsStanding;`n};`n`nclass CPed : public CEntity {`npublic:`n    float m_fHealth;`n    CPedFlags m_nPedFlags;`n};`n`nclass CPlayerPed : public CPed {`npublic:`n};"
+          Set-Content -Path "plugin-sdk\shared\CVehicle.h" -Value "#pragma once`n// Dummy CVehicle header`n#include `"CEntity.h`"`n`nclass CVehicle : public CEntity {`npublic:`n    float m_fHealth;`n    unsigned char m_nPrimaryColor;`n};`n`nclass CAutomobile : public CVehicle {`npublic:`n};"
+          Set-Content -Path "plugin-sdk\shared\CHud.h" -Value "#pragma once`n// Dummy CHud header`nclass CHud {`npublic:`n    static void SetHelpMessage(const char* message, bool quick, bool permanent, bool addToBrief = false) {}`n};"
+          Set-Content -Path "plugin-sdk\shared\CMessages.h" -Value "#pragma once`n// Dummy CMessages header`nclass CMessages {`npublic:`n    static void AddMessageJumpQ(char* message, int duration, int flag, bool flag2 = false) {}`n};"
+          Set-Content -Path "plugin-sdk\shared\CPools.h" -Value "#pragma once`n// Dummy CPools header`n#include `"CPlayerPed.h`"`n#include `"CVehicle.h`"`n`nclass CPools {`npublic:`n    static CPlayerPed* GetPed(int index) { return nullptr; }`n    static CVehicle* GetVehicle(int index) { return nullptr; }`n};"
+          Set-Content -Path "plugin-sdk\shared\common.h" -Value "#pragma once`n// Dummy common header`n#include `"CPlayerPed.h`"`n#include `"CVehicle.h`"`n`nCPlayerPed* FindPlayerPed() { return nullptr; }`nCVehicle* FindPlayerVehicle(int player = 0, bool includeRemote = false) { return nullptr; }"
+          Set-Content -Path "plugin-sdk\shared\CHeli.h" -Value "#pragma once`n// Dummy CHeli header (for SA)`n#include `"CVehicle.h`"`n`nclass CHeli : public CVehicle {`npublic:`n};`n`nclass CCopPed : public CPed {`npublic:`n};"
 
-// Define the static member
-plugin::Event<void()> plugin::Events::initGameEvent;
+          # Create basic dummy library files (minimal valid LIB format)
+          $dummyLibContent = @(0x21, 0x3C, 0x61, 0x72, 0x63, 0x68, 0x3E, 0x0A)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin.lib", $dummyLibContent)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_d.lib", $dummyLibContent)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_vc.lib", $dummyLibContent)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_vc_d.lib", $dummyLibContent)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_iii.lib", $dummyLibContent)
+          [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_iii_d.lib", $dummyLibContent)
 
-// Define basic macros that might be expected
-#define PLUGIN_SGV_10US
-#define GTASA
-#define RW
-"@ | Out-File -FilePath "plugin-sdk\shared\plugin.h" -Encoding ASCII
-        
-        "// Dummy Game header" | Out-File -FilePath "plugin-sdk\shared\game\game.h" -Encoding ASCII
-        
-        # Create additional required headers for C++ compilation
-        @"
-#pragma once
-// Dummy CPool header
-template<typename T, typename V = T>
-class CPool {
-public:
-    T* GetAt(int index) { return nullptr; }
-    int GetSize() { return 0; }
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CPool.h" -Encoding ASCII
+          # Create dummy DirectX SDK structure
+          New-Item -ItemType Directory -Force -Path "dxsdk\Lib\x86"
 
-        @"
-#pragma once
-// Dummy CEntity header
-struct CVector {
-    float x, y, z;
-    CVector() : x(0), y(0), z(0) {}
-    CVector(float x, float y, float z) : x(x), y(y), z(z) {}
-};
+          Write-Host "Dummy SDK structures created successfully"
 
-class CEntity {
-public:
-    CVector GetPosition() { return CVector(); }
-    void SetPosition(CVector pos) {}
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CEntity.h" -Encoding ASCII
+      - name: Restore .NET packages
+        run: dotnet restore project_files/Megasware128.GTA.DotNetLoader.sln
 
-        @"
-#pragma once
-// Dummy CPed header
-#include "CEntity.h"
+      - name: Build .NET projects
+        run: |
+          dotnet build Megasware128.GTA.Abstractions/Megasware128.GTA.Abstractions.csproj --configuration Release --no-restore
+          dotnet build Megasware128.GTA.Runtime/Megasware128.GTA.Runtime.csproj --configuration Release --no-restore
 
-struct CPedFlags {
-    bool bIsStanding;
-};
+      - name: Build C++ project (SA Release)
+        shell: cmd
+        run: |
+          set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
+          set DXSDK_DIR=${{ github.workspace }}\dxsdk
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseSA /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
 
-class CPed : public CEntity {
-public:
-    float m_fHealth;
-    CPedFlags m_nPedFlags;
-};
+      - name: Build C++ project (VC Release)
+        shell: cmd
+        run: |
+          set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
+          set DXSDK_DIR=${{ github.workspace }}\dxsdk
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseVC /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
 
-class CPlayerPed : public CPed {
-public:
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CPlayerPed.h" -Encoding ASCII
+      - name: Build C++ project (III Release)
+        shell: cmd
+        run: |
+          set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
+          set DXSDK_DIR=${{ github.workspace }}\dxsdk
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseIII /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
 
-        @"
-#pragma once
-// Dummy CVehicle header
-#include "CEntity.h"
-
-class CVehicle : public CEntity {
-public:
-    float m_fHealth;
-    unsigned char m_nPrimaryColor;
-};
-
-class CAutomobile : public CVehicle {
-public:
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CVehicle.h" -Encoding ASCII
-
-        @"
-#pragma once
-// Dummy CHud header
-class CHud {
-public:
-    static void SetHelpMessage(const char* message, bool quick, bool permanent, bool addToBrief = false) {}
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CHud.h" -Encoding ASCII
-
-        @"
-#pragma once
-// Dummy CMessages header
-class CMessages {
-public:
-    static void AddMessageJumpQ(char* message, int duration, int flag, bool flag2 = false) {}
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CMessages.h" -Encoding ASCII
-
-        @"
-#pragma once
-// Dummy CPools header
-#include "CPlayerPed.h"
-#include "CVehicle.h"
-
-class CPools {
-public:
-    static CPlayerPed* GetPed(int index) { return nullptr; }
-    static CVehicle* GetVehicle(int index) { return nullptr; }
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CPools.h" -Encoding ASCII
-
-        @"
-#pragma once
-// Dummy common header
-#include "CPlayerPed.h"
-#include "CVehicle.h"
-
-CPlayerPed* FindPlayerPed() { return nullptr; }
-CVehicle* FindPlayerVehicle(int player = 0, bool includeRemote = false) { return nullptr; }
-"@ | Out-File -FilePath "plugin-sdk\shared\common.h" -Encoding ASCII
-
-        @"
-#pragma once
-// Dummy CHeli header (for SA)
-#include "CVehicle.h"
-
-class CHeli : public CVehicle {
-public:
-};
-
-class CCopPed : public CPed {
-public:
-};
-"@ | Out-File -FilePath "plugin-sdk\shared\CHeli.h" -Encoding ASCII
-        
-        # Create basic dummy library files (minimal valid LIB format)
-        $dummyLibContent = @(0x21, 0x3C, 0x61, 0x72, 0x63, 0x68, 0x3E, 0x0A)  # "!<arch>" header for LIB files
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin.lib", $dummyLibContent)
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_d.lib", $dummyLibContent)
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_vc.lib", $dummyLibContent)
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_vc_d.lib", $dummyLibContent)
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_iii.lib", $dummyLibContent)
-        [System.IO.File]::WriteAllBytes("plugin-sdk\output\lib\plugin_iii_d.lib", $dummyLibContent)
-        
-        # Create dummy DirectX SDK structure
-        New-Item -ItemType Directory -Force -Path "dxsdk\Lib\x86"
-        
-        Write-Host "Dummy SDK structures created successfully"
-
-    - name: Restore .NET packages
-      run: dotnet restore project_files/Megasware128.GTA.DotNetLoader.sln
-
-    - name: Build .NET projects
-      run: |
-        dotnet build Megasware128.GTA.Abstractions/Megasware128.GTA.Abstractions.csproj --configuration Release --no-restore
-        dotnet build Megasware128.GTA.Runtime/Megasware128.GTA.Runtime.csproj --configuration Release --no-restore
-
-    - name: Build C++ project (SA Release)
-      shell: cmd
-      run: |
-        set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
-        set DXSDK_DIR=${{ github.workspace }}\dxsdk
-        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseSA /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
-
-    - name: Build C++ project (VC Release)
-      shell: cmd
-      run: |
-        set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
-        set DXSDK_DIR=${{ github.workspace }}\dxsdk
-        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseVC /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
-
-    - name: Build C++ project (III Release)
-      shell: cmd
-      run: |
-        set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
-        set DXSDK_DIR=${{ github.workspace }}\dxsdk
-        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseIII /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-output
-        path: |
-          output/
-          Megasware128.GTA.Abstractions/bin/
-          Megasware128.GTA.Runtime/bin/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            output/
+            Megasware128.GTA.Abstractions/bin/
+            Megasware128.GTA.Runtime/bin/
