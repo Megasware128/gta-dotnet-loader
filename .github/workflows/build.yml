@@ -74,6 +74,9 @@ namespace plugin {
     };
 }
 
+// Define the static member
+plugin::Event<void()> plugin::Events::initGameEvent;
+
 // Define basic macros that might be expected
 #define PLUGIN_SGV_10US
 #define GTASA
@@ -109,7 +112,21 @@ namespace plugin {
       run: |
         set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
         set DXSDK_DIR=${{ github.workspace }}\dxsdk
-        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseSA /p:Platform=Win32 /p:PlatformToolset=v143 /p:PostBuildEventUseInBuild=false
+        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseSA /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
+
+    - name: Build C++ project (VC Release)
+      shell: cmd
+      run: |
+        set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
+        set DXSDK_DIR=${{ github.workspace }}\dxsdk
+        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseVC /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
+
+    - name: Build C++ project (III Release)
+      shell: cmd
+      run: |
+        set PLUGIN_SDK_DIR=${{ github.workspace }}\plugin-sdk
+        set DXSDK_DIR=${{ github.workspace }}\dxsdk
+        msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration=ReleaseIII /p:Platform=Win32 /p:PlatformToolset=v143 /p:CustomBeforeMicrosoftCommonProps=..\ci-build.props
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
