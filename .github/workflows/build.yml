@@ -80,6 +80,11 @@ jobs:
           # Create dummy DirectX SDK structure
           New-Item -ItemType Directory -Force -Path "dxsdk\Lib\x86"
 
+          # Create dummy GTA directories to prevent PostBuildEvent failures
+          New-Item -ItemType Directory -Force -Path "dummy-gta-sa\scripts"
+          New-Item -ItemType Directory -Force -Path "dummy-gta-vc\scripts" 
+          New-Item -ItemType Directory -Force -Path "dummy-gta-iii\scripts"
+
           Write-Host "Dummy SDK structures created successfully"
 
       - name: Restore .NET packages
