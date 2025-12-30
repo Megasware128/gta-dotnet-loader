@@ -99,12 +99,7 @@ jobs:
       - name: Restore .NET packages
         run: dotnet restore project_files/Megasware128.GTA.DotNetLoader.sln
 
-      - name: Build .NET projects
-        run: |
-          dotnet build Megasware128.GTA.Abstractions/Megasware128.GTA.Abstractions.csproj --configuration Release --no-restore
-          dotnet build Megasware128.GTA.Runtime/Megasware128.GTA.Runtime.csproj --configuration Release --no-restore
-
-      - name: Build C++ project (SA Release)
+      - name: Build solution (SA Release)
         shell: powershell
         run: |
           $env:PLUGIN_SDK_DIR = "${{ github.workspace }}\plugin-sdk"
@@ -115,9 +110,9 @@ jobs:
           Write-Host "PLUGIN_SDK_DIR: $env:PLUGIN_SDK_DIR"
           Write-Host "DXSDK_DIR: $env:DXSDK_DIR"
           Write-Host "GTA_SA_DIR: $env:GTA_SA_DIR"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.vcxproj /p:Configuration=ReleaseSA /p:Platform=Win32 /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseSA" /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:detailed
 
-      - name: Build C++ project (VC Release)
+      - name: Build solution (VC Release)
         shell: powershell
         run: |
           $env:PLUGIN_SDK_DIR = "${{ github.workspace }}\plugin-sdk"
@@ -125,9 +120,9 @@ jobs:
           $env:GTA_SA_DIR = "${{ github.workspace }}\dummy-gta-sa"
           $env:GTA_VC_DIR = "${{ github.workspace }}\dummy-gta-vc"
           $env:GTA_III_DIR = "${{ github.workspace }}\dummy-gta-iii"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.vcxproj /p:Configuration=ReleaseVC /p:Platform=Win32 /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseVC" /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:detailed
 
-      - name: Build C++ project (III Release)
+      - name: Build solution (III Release)
         shell: powershell
         run: |
           $env:PLUGIN_SDK_DIR = "${{ github.workspace }}\plugin-sdk"
@@ -135,7 +130,7 @@ jobs:
           $env:GTA_SA_DIR = "${{ github.workspace }}\dummy-gta-sa"
           $env:GTA_VC_DIR = "${{ github.workspace }}\dummy-gta-vc"
           $env:GTA_III_DIR = "${{ github.workspace }}\dummy-gta-iii"
-          msbuild project_files/Megasware128.GTA.DotNetLoader.vcxproj /p:Configuration=ReleaseIII /p:Platform=Win32 /p:PlatformToolset=v143 /verbosity:normal
+          msbuild project_files/Megasware128.GTA.DotNetLoader.sln /p:Configuration="ReleaseIII" /p:Platform="Mixed Platforms" /p:PlatformToolset=v143 /verbosity:detailed
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
